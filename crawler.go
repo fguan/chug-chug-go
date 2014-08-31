@@ -21,7 +21,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fguan/ginger-collections/stack"
+	"github.com/fguan/ginger-collections"
 )
 
 func GetNextTarget(page string) (url string, endPos int) {
@@ -68,12 +68,12 @@ func GetPage(url string) (page string) {
 func Crawl(seed string) map[string]bool {
 	toCrawl := stack.New()
 	toCrawl.Push(seed)
-	crawled := map[string]bool
+	crawled := map[string]bool{}
 	for ; !toCrawl.Empty(); {
-		page = toCrawl.Pop()
+		page := toCrawl.Pop().(string)
 		if crawled[page] == false {
-			for _, v := GetAllLinks(GetPage(page)) {
-				stack.Push(v)
+			for _, v := range GetAllLinks(GetPage(page)) {
+				toCrawl.Push(v)
 			}
 			crawled[page] = true
 		}
