@@ -65,22 +65,25 @@ func GetPage(url string) (page string) {
 	return string(p)
 }
 
-func Crawl(seed string) map[string][]string {
+func Crawl(seed string) map[string][]string, map[string][]string {
 	toCrawl := stack.New()
 	toCrawl.Push(seed)
 	crawled := map[string]bool{}
 	index := map[string][]string{}
+	graph := map[string][]string{}
 
 	for ; !toCrawl.Empty(); {
 		page := toCrawl.Pop().(string)
 		if crawled[page] == false {
 			content = GetPage(page)
 			AddPageToIndex(index, page, content)
-			for _, v := range GetAllLinks(GetPage(page)) {
+			outlinks := GetAllLinks(GetPage(page))
+			graph[page] = outlinks
+			for _, v := range outlinks {
 				toCrawl.Push(v)
 			}
 			crawled[page] = true
 		}
 	}
-	return index
+	return index, graph
 }
