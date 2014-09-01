@@ -3,6 +3,13 @@ ChugChugGo
 
 ChugChugGo is a simple search engine written in Go. 
 
+Features
+--------
+
+* Web crawler
+* Creation of an inverted index
+* Compute page ranks
+
 License
 -------
 
