@@ -22,14 +22,14 @@ const (
 
 
 func ComputeRanks(graph map[string][]string) map[string]float64 {
-	ranks := map[string]float64{}
+	ranks := make(map[string]float64)
 	npages := len(graph)
 	for page, _ := range graph {
 		ranks[page] = 1.0 / float64(npages)
 	}
 
 	for i := 0; i < numLoops; i++ {
-		newRanks := map[string]float64{}
+		newRanks := make(map[string]float64)
 		for page, _ := range graph {
 			newRank := (1 - d) / float64(npages)
 			// summation of inlinks

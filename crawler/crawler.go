@@ -39,7 +39,7 @@ func GetNextTarget(page string) (url string, endPos int) {
 }
 
 func GetAllLinks(page string) []string {
-	links :=  []string{}
+	links :=  make([]string, 0)
 	for {
 		url, endPos := GetNextTarget(page)
 		if url != "" {
@@ -68,9 +68,9 @@ func GetPage(url string) (page string) {
 func Crawl(seed string) map[string][]string, map[string][]string {
 	toCrawl := stack.New()
 	toCrawl.Push(seed)
-	crawled := map[string]bool{}
-	index := map[string][]string{}
-	graph := map[string][]string{}
+	crawled := make(map[string]bool)
+	index := make(map[string][]string)
+	graph := make(map[string][]string)
 
 	for ; !toCrawl.Empty(); {
 		page := toCrawl.Pop().(string)
