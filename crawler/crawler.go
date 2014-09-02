@@ -31,10 +31,7 @@ func GetNextTarget(page string) (url string, endPos int) {
 	if startLink := strings.Index(page, "<a href="); startLink >= 0 {
 		startQuote := strings.Index(page[startLink:], "\"") + startLink
 		endQuote = strings.Index(page[startQuote+1:], "\"") + startQuote + 1
-		//fmt.Println("==================")
-		//fmt.Printf("%d %d\n",startQuote, endQuote)
 		url = page[startQuote+1:endQuote]
-		//fmt.Printf("%s\n", url)
 	}
 	return url, endQuote
 }
@@ -44,7 +41,6 @@ func GetAllLinks(page string) []string {
 	for {
 		url, endPos := GetNextTarget(page)
 		if url != "" {
-			//fmt.Println(url)
 			links = append(links, url)
 			page = page[endPos:]
 		} else {
@@ -69,6 +65,7 @@ func GetPage(url string) (page string) {
 func Crawl(seed string) (map[string][]string, map[string][]string) {
 	toCrawl := stack.New()
 	toCrawl.Push(seed)
+
 	crawled := make(map[string]bool)
 	indxx := make(map[string][]string)
 	graph := make(map[string][]string)
