@@ -19,28 +19,48 @@ import (
 	"strings"
 )
 
-func AddToIndex(index map[string][]string, keyword string, url string) {
-	if allUrls, ok := index[keyword]; ok {
-		allUrls = append(allUrls, url)
-		index[keyword] = allUrls
-	} else {
-		index[keyword] = []string{url}
+var stopWords = createStopWordsMap()
+
+func createStopWordsMap() map[string]bool {
+	m := make(map[string]bool)
+	for _, word := range strings.Fields(stopWordsText) {
+		m[word] = true
 	}
+	return m
 }
 
-func Lookup(index map[string][]string, keyword string) []string {
-	if allUrls, ok := index[keyword]; ok {
-		return allUrls
-	} else {
-		return []string{}
-	}
-}
-
-func AddPageToIndex(index map[string][]string, url string, content string) {
-	a := strings.Split(content, " ")
-	for _, v := range a {
-		if !stopWords[v] {
-			AddToIndex(index, v, url)
-		}
-	}
-}
+// taken from http://www.ranks.nl/stopwords
+const stopWordsText = `
+I
+a
+about
+an
+are
+as
+at
+be
+by
+com
+for
+from
+how
+in
+is
+it
+of
+on
+or
+that
+the
+this
+to
+was
+what
+when
+where
+who
+will
+with
+the
+www
+`
