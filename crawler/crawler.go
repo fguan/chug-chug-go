@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/fguan/chug-chug-go/index"
 	"github.com/fguan/ginger-collections"
 )
 
@@ -65,18 +66,18 @@ func GetPage(url string) (page string) {
 	return string(p)
 }
 
-func Crawl(seed string) map[string][]string, map[string][]string {
+func Crawl(seed string) (map[string][]string, map[string][]string) {
 	toCrawl := stack.New()
 	toCrawl.Push(seed)
 	crawled := make(map[string]bool)
-	index := make(map[string][]string)
+	indxx := make(map[string][]string)
 	graph := make(map[string][]string)
 
 	for ; !toCrawl.Empty(); {
 		page := toCrawl.Pop().(string)
 		if crawled[page] == false {
-			content = GetPage(page)
-			AddPageToIndex(index, page, content)
+			content := GetPage(page)
+			index.AddPageToIndex(indxx, page, content)
 			outlinks := GetAllLinks(GetPage(page))
 			graph[page] = outlinks
 			for _, v := range outlinks {
@@ -85,5 +86,5 @@ func Crawl(seed string) map[string][]string, map[string][]string {
 			crawled[page] = true
 		}
 	}
-	return index, graph
+	return indxx, graph
 }
